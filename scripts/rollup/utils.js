@@ -13,13 +13,19 @@ export const resolvePkgPath = (pkgName, isDist) => {
 	return `${pkgPath}/${pkgName}`;
 };
 export function getPackageJSON(pkgName) {
+	console.log(pkgName, 'pkgName_');
+
 	const path = `${resolvePkgPath(pkgName)}/package.json`;
+	console.log(path, 'path_');
+
 	const str = fs.readFileSync(path, { encoding: 'utf-8' });
+	console.log(str, '??');
+
 	return JSON.parse(str);
 }
 export function getBaseRollupPlugins({
-	alias = { __DEV__: true },
+	alias = { __Dev__: true },
 	typescript = {}
 } = {}) {
-	return [replace(alias), cjs(), ts(typescript)];
+	return [replace(alias), ts(), cjs(typescript)];
 }

@@ -5,6 +5,6 @@ import React from 'react';
 
 // createRoot(document.getElementById('root')!).render(<div>重写react_</div>);
 
-<div ref={null} key={null} onClick={() => 123} props={{}}>
+<div ref={null} key={null} onClick={() => 123}>
 	123
 </div>;

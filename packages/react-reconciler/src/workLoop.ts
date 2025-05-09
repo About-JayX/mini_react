@@ -1,3 +1,4 @@
+import { beginWork } from './beginWork';
 import { createWorkInProgress, FiberNode } from './fiber';
 import { HostRoot } from './workTags';
 
@@ -40,6 +41,7 @@ function performUnitOfWork(fiber: FiberNode) {
 	}
 }
 
+function completeWork(node: FiberNode) {}
 function completeUnitOfWork(fiber: FiberNode) {
 	let node: FiberNode | null = fiber;
 	do {

@@ -1,4 +1,4 @@
-import { Container } from './hostConfig';
+import { Container } from 'hostConfig';
 import { FiberNode, FiberRootNode } from './fiber';
 import { HostRoot } from './workTags';
 import {
@@ -22,10 +22,12 @@ export function updateContainer(
 	root: FiberRootNode
 ) {
 	const hostRootFiber = root.current;
+
 	const update = createUpdate<ReactElementType | null>(element);
 	enqueueUpdate(
 		hostRootFiber.updateQueue as UpdateQueue<ReactElementType | null>,
 		update
 	);
 	scheduleUpdateOnFiber(hostRootFiber);
+	return element;
 }

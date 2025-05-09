@@ -1,9 +1,10 @@
-import { FiberNode } from './fiber';
+import { createWorkInProgress, FiberNode } from './fiber';
+import { HostRoot } from './workTags';
 
 let workInProgress: FiberNode | null = null;
 // 渲染函数
 function renderRoot(root: FiberNode) {
-	//  查找跟节点
+	//  工作节点__renderRoot从根节点进入更新状态
 	prepareFreshStack(root);
 
 	try {
@@ -15,7 +16,7 @@ function renderRoot(root: FiberNode) {
 }
 
 function prepareFreshStack(root: FiberNode) {
-	workInProgress = root;
+	workInProgress = createWorkInProgress(root, {});
 }
 
 function workLoop() {
@@ -51,4 +52,24 @@ function completeUnitOfWork(fiber: FiberNode) {
 		node = node.return;
 		workInProgress = node;
 	} while (node !== null);
+}
+
+// 调度功能
+export function scheduleUpdateOnFiber(fiber: FiberNode) {
+	// 先遍历根节点
+	const root = markUpdateFromFiberToRoot(fiber);
+	// 根节点开始往下遍历
+	renderRoot(root);
+}
+
+// 从触发更新的节点向上遍历到 FiberRootNode
+function markUpdateFromFiberToRoot(fiber: FiberNode) {
+	let node = fiber;
+	while (node.return !== null) {
+		node = node.return;
+	}
+	if (node.tag == HostRoot) {
+		return node.stateNode;
+	}
+	return null;
 }

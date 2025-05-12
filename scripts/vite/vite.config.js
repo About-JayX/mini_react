@@ -4,9 +4,6 @@ import replace from '@rollup/plugin-replace';
 import { resolvePkgPath } from '../rollup/utils';
 import path from 'path';
 
-const modulePath = path.resolve(__dirname, '../../node_modules');
-console.log(modulePath, '??');
-
 // https://vitejs.dev/config/
 export default defineConfig({
 	plugins: [react(), replace({ __DEV__: true, preventAssignment: true })],
@@ -19,12 +16,12 @@ export default defineConfig({
 			},
 			{
 				find: 'react-dom',
-				replacement: `${modulePath}/react-dom`
+				replacement: resolvePkgPath('react-dom')
 			},
 			{
 				find: 'hostConfig',
 				replacement: path.resolve(
-					`${modulePath}/react-dom`,
+					resolvePkgPath('react-dom'),
 					'./src/hostConfig.ts'
 				)
 			}

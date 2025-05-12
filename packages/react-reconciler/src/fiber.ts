@@ -65,7 +65,7 @@ export const createWorkInProgress = (
 	current: FiberNode,
 	pendingProps: Props
 ): FiberNode => {
-	// 获取备份节点
+	// 获取备份节点,首屏渲染为null
 	let workInProgress = current.alternate;
 
 	if (workInProgress == null) {

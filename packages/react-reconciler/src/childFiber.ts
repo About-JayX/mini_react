@@ -9,20 +9,24 @@ function ChildReconciler(shouldTrackSideEffects: boolean) {
 	function placeSingleChild(fiber: FiberNode) {
 		// 首屏渲染且追踪副作用时，才添加更新 flags
 		if (shouldTrackSideEffects && fiber.alternate == null) {
+			console.log('placeSingleChild:进入首屏渲染');
+
 			fiber.flags |= Placement;
 		}
 		return fiber;
 	}
+	// 处理父子关系,并返回chind的fiber
 	function reconcileSingleElement(
 		returnFiber: FiberNode,
 		currentFiber: FiberNode | null,
 		element: ReactElementType
 	) {
-		// 根据dom构建fiber.
+		// reactElement构建fiber.
 		const fiber = createFiberFromElement(element);
 		fiber.return = returnFiber;
 		return fiber;
 	}
+	// 处理文本节点
 	function reconcileSingleTextNode(
 		returnFiber: FiberNode,
 		currentFiber: FiberNode | null,
@@ -32,7 +36,7 @@ function ChildReconciler(shouldTrackSideEffects: boolean) {
 		fiber.return = returnFiber;
 		return fiber;
 	}
-
+	// 闭包
 	return function reconcileChildFibers(
 		returnFiber: FiberNode,
 		currentFiber: FiberNode | null,

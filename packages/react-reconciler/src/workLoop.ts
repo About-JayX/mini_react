@@ -1,13 +1,12 @@
 import { beginWork } from './beginWork';
-import { createWorkInProgress, FiberNode } from './fiber';
+import { createWorkInProgress, FiberNode, FiberRootNode } from './fiber';
 import { HostRoot } from './workTags';
 
 let workInProgress: FiberNode | null = null;
 // 渲染函数
-function renderRoot(root: FiberNode) {
+function renderRoot(root: FiberRootNode) {
 	//  工作节点__renderRoot从根节点进入更新状态
 	prepareFreshStack(root);
-
 	try {
 		workLoop();
 	} catch (error) {
@@ -16,8 +15,8 @@ function renderRoot(root: FiberNode) {
 	}
 }
 
-function prepareFreshStack(root: FiberNode) {
-	workInProgress = createWorkInProgress(root, {});
+function prepareFreshStack(root: FiberRootNode) {
+	workInProgress = createWorkInProgress(root.current, {});
 }
 
 function workLoop() {
@@ -29,6 +28,7 @@ function workLoop() {
 function performUnitOfWork(fiber: FiberNode) {
 	// 从每个节点开始遍历
 	const next = beginWork(fiber);
+
 	//  处理属性更新情况
 	fiber.memoizedProps = fiber.pendingProps;
 
@@ -58,7 +58,7 @@ function completeUnitOfWork(fiber: FiberNode) {
 
 // 调度功能
 export function scheduleUpdateOnFiber(fiber: FiberNode) {
-	// 先遍历根节点
+	// 先遍历找到根节点
 	const root = markUpdateFromFiberToRoot(fiber);
 	// 根节点开始往下遍历
 	renderRoot(root);
@@ -67,6 +67,7 @@ export function scheduleUpdateOnFiber(fiber: FiberNode) {
 // 从触发更新的节点向上遍历到 FiberRootNode
 function markUpdateFromFiberToRoot(fiber: FiberNode) {
 	let node = fiber;
+
 	while (node.return !== null) {
 		node = node.return;
 	}

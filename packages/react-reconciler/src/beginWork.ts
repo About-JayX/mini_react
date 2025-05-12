@@ -20,7 +20,10 @@ export const beginWork = (workInProgress: FiberNode) => {
 	}
 };
 const updateHostRoot = (workInProgress: FiberNode) => {
+	console.log(workInProgress, 'workInProgress');
+
 	const baseState = workInProgress.memoizedState;
+
 	const updateQueue = workInProgress.updateQueue as UpdateQueue<Element>;
 	// 首屏加载时 pending 为element_
 	const peding = updateQueue.shared.pending;
@@ -50,14 +53,19 @@ const reconcileChildren = (
 	children?: ReactElementType
 ) => {
 	const current = workInProgress.alternate;
+
 	// 处理首次挂载和节点复用
 	if (current !== null) {
+		console.log('reconcileChildFibers_');
+
 		workInProgress.child = reconcileChildFibers(
 			workInProgress,
 			current?.child,
 			children
 		);
 	} else {
+		console.log('mountChildFibers_');
+
 		workInProgress.child = mountChildFibers(workInProgress, null, children);
 	}
 };

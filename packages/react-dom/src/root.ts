@@ -1,27 +1,19 @@
-export type Container = Element;
-export type Instance = Element;
+import { Container } from 'hostConfig';
+import {
+	createContainer,
+	updateContainer
+} from 'react-reconciler/src/fiberReconciler';
+import { ReactElementType } from 'shared/ReactTypes';
 
-export const createInstance = (type: string, porps: any): Instance => {
-	// TODO: 处理 props
-	const element = document.createElement(type);
-	return element;
-};
+// container -> domcument.getElement:Element
+// root -> jsx -> ReactElement:ReactElementTypre
+export function createRoot(container: Container) {
+	// 构建 FiberRootNode
+	const root = createContainer(container);
 
-export const appendInitialChild = (
-	parent: Instance | Container,
-	child: Instance
-) => {
-	parent.appendChild(child);
-};
-
-export const createTextInstance = (content: string) => {
-	const element = document.createTextNode(content);
-	return element;
-};
-
-export const appendChildToContainer = (
-	child: Instance,
-	parent: Instance | Container
-) => {
-	parent.appendChild(child);
-};
+	return {
+		render(element: ReactElementType) {
+			updateContainer(element, root);
+		}
+	};
+}

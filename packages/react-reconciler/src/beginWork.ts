@@ -59,6 +59,7 @@ const reconcileChildren = (
 	// 处理首次挂载和节点复用
 	if (current !== null) {
 		console.log('reconcileChildFibers_');
+		console.log(current, 'current');
 
 		workInProgress.child = reconcileChildFibers(
 			workInProgress,

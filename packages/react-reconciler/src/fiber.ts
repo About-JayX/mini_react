@@ -72,7 +72,6 @@ export const createWorkInProgress = (
 		//如果备份节点为null 首次进入_首屏渲染时（mount）
 		workInProgress = new FiberNode(current.tag, pendingProps, current.key);
 		workInProgress.stateNode = current.stateNode;
-
 		// 双缓冲机制
 		workInProgress.alternate = current;
 		current.alternate = workInProgress;

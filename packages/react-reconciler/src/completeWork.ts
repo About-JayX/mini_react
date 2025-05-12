@@ -1,39 +1,38 @@
-// packages/react-reconciler/src/completeWork.ts
 import {
 	appendInitialChild,
+	Container,
 	createInstance,
 	createTextInstance,
-	Container,
 	Instance
 } from 'hostConfig';
 import { FiberNode } from './fiber';
 import { HostComponent, HostRoot, HostText } from './workTags';
 import { NoFlags } from './fiberFlags';
 
-// 生成更新计划，计算和收集更新 flags
 export const completeWork = (workInProgress: FiberNode) => {
+	// 处理props
+	console.log(workInProgress, 'workInProgress_complete');
+
 	const newProps = workInProgress.pendingProps;
 	const current = workInProgress.alternate;
+
 	switch (workInProgress.tag) {
 		case HostRoot:
 			bubbleProperties(workInProgress);
 			return null;
 
-		case HostComponent:
+		case HostComponent: {
 			if (current !== null && workInProgress.stateNode !== null) {
-				// TODO: 组件的更新阶段
+				// 更新阶段
 			} else {
-				// 首屏渲染阶段
-				// 构建 DOM
+				// 首次加载阶段
 				const instance = createInstance(workInProgress.type, newProps);
-				// 将 DOM 插入到 DOM 树中
 				appendAllChildren(instance, workInProgress);
 				workInProgress.stateNode = instance;
 			}
-			// 收集更新 flags
 			bubbleProperties(workInProgress);
 			return null;
-
+		}
 		case HostText:
 			if (current !== null && workInProgress.stateNode !== null) {
 				// TODO: 组件的更新阶段
@@ -54,9 +53,6 @@ export const completeWork = (workInProgress: FiberNode) => {
 			return null;
 	}
 };
-
-// packages/react-reconciler/src/completeWork.ts
-// ...
 
 function appendAllChildren(
 	parent: Container | Instance,
@@ -88,9 +84,6 @@ function appendAllChildren(
 		node = node.sibling;
 	}
 }
-// packages/react-reconciler/src/completeWork.ts
-// ...
-
 // 收集更新 flags，将子 FiberNode 的 flags 冒泡到父 FiberNode 上
 function bubbleProperties(workInProgress: FiberNode) {
 	let subtreeFlags = NoFlags;

@@ -7,5 +7,8 @@ import ReactDOM from 'react-dom';
 const RD: { createRoot: any } = ReactDOM as unknown as { createRoot: any };
 
 RD.createRoot(document.getElementById('root')).render(
-	<div className="test_"></div>
+	<div className="test_">
+		<div>123</div>
+		<div>234</div>
+	</div>
 );

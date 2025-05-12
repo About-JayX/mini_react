@@ -4,6 +4,8 @@ import { processUpdateQueue, UpdateQueue } from './updateQueue';
 import { HostComponent, HostRoot, HostText } from './workTags';
 import { mountChildFibers, reconcileChildFibers } from './childFiber';
 export const beginWork = (workInProgress: FiberNode) => {
+	console.log(workInProgress, 'workInProgress_begin');
+
 	switch (workInProgress.tag) {
 		case HostRoot:
 			return updateHostRoot(workInProgress);

@@ -1,4 +1,5 @@
 import { beginWork } from './beginWork';
+import { completeWork } from './completeWork';
 import { createWorkInProgress, FiberNode, FiberRootNode } from './fiber';
 import { HostRoot } from './workTags';
 
@@ -26,7 +27,7 @@ function workLoop() {
 }
 // 遍历节点
 function performUnitOfWork(fiber: FiberNode) {
-	// 从每个节点开始遍历
+	// 从每个节点开始遍历 查找是否存在子节点
 	const next = beginWork(fiber);
 
 	//  处理属性更新情况
@@ -41,11 +42,10 @@ function performUnitOfWork(fiber: FiberNode) {
 	}
 }
 
-function completeWork(node: FiberNode) {}
 function completeUnitOfWork(fiber: FiberNode) {
 	let node: FiberNode | null = fiber;
 	do {
-		// 生成更新计划
+		// 生成更新计划  函数在向上遍历阶段执行
 		completeWork(node);
 		const sibling = node.sibling;
 		if (sibling !== null) {

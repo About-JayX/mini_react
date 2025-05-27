@@ -24,6 +24,7 @@ export const commitMutationEffects = (finishedWork: FiberNode) => {
 			child !== null
 		) {
 			// 子节点存在 mutation 阶段需要执行的 flags
+			console.log(child, '子节点存在 mutation 阶段需要执行的 flags');
 			nextEffect = child;
 		} else {
 			// 子节点不存在 mutation 阶段需要执行的 flags 或没有子节点
@@ -47,6 +48,9 @@ export const commitMutationEffects = (finishedWork: FiberNode) => {
 
 const commitMutationEffectsOnFiber = (finishedWork: FiberNode) => {
 	const flags = finishedWork.flags;
+
+	// 判断是否存在对应操作,存在执行对应操作并清除标志位
+
 	if ((flags & Placement) !== NoFlags) {
 		commitPlacement(finishedWork);
 		finishedWork.flags &= ~Placement;
@@ -66,6 +70,8 @@ const commitPlacement = (finishedWork: FiberNode) => {
 	if (__DEV__) {
 		console.log('执行 Placement 操作', finishedWork);
 	}
+	console.log(finishedWork, 'finishedWork——插入节点');
+
 	const hostParent = getHostParent(finishedWork);
 	if (hostParent !== null) {
 		appendPlacementNodeIntoContainer(finishedWork, hostParent);
@@ -99,6 +105,7 @@ const appendPlacementNodeIntoContainer = (
 	hostParent: Container
 ) => {
 	if (finishedWork.tag === HostComponent || finishedWork.tag === HostText) {
+		// 如果当前 Fiber 是原生节点或文本节点，直接插入 DOM
 		appendChildToContainer(finishedWork.stateNode, hostParent);
 	} else {
 		const child = finishedWork.child;

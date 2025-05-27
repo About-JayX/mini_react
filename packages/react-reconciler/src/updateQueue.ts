@@ -1,5 +1,6 @@
 import { Action } from 'shared/ReactTypes';
 import { Update } from './fiberFlags';
+import { Dispatch } from 'react/src/currentDispatcher';
 
 export interface Update<State> {
 	action: Action<State>;
@@ -10,6 +11,7 @@ export interface UpdateQueue<State> {
 	shared: {
 		pending: Update<State> | null;
 	};
+	dispatch: Dispatch<State> | null;
 }
 // 构建Update实例
 export const createUpdate = <State>(action: Action<State>): Update<State> => {
@@ -22,7 +24,8 @@ export const createUpdateQueue = <State>(): UpdateQueue<State> => {
 	return {
 		shared: {
 			pending: null
-		}
+		},
+		dispatch: null
 	};
 };
 
@@ -32,7 +35,7 @@ export const enqueueUpdate = <State>(
 ) => {
 	updateQueue.shared.pending = update;
 };
-
+// 消费update
 export const processUpdateQueue = <State>(
 	baseState: State,
 	pendingUpdate: Update<State> | null

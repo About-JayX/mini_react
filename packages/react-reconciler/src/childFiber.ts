@@ -9,8 +9,6 @@ function ChildReconciler(shouldTrackSideEffects: boolean) {
 	function placeSingleChild(fiber: FiberNode) {
 		// 首屏渲染且追踪副作用时，才添加更新 flags
 		if (shouldTrackSideEffects && fiber.alternate == null) {
-			console.log('placeSingleChild:进入首屏渲染');
-
 			fiber.flags |= Placement;
 		}
 		return fiber;
@@ -21,7 +19,10 @@ function ChildReconciler(shouldTrackSideEffects: boolean) {
 		currentFiber: FiberNode | null,
 		element: ReactElementType
 	) {
-		// reactElement构建fiber.
+		if (currentFiber !== null) {
+			console.log(currentFiber, 'currentFiber');
+		}
+		// reactElement构建fiber. 处理pendingProps状态
 		const fiber = createFiberFromElement(element);
 		fiber.return = returnFiber;
 		return fiber;
@@ -79,8 +80,6 @@ function ChildReconciler(shouldTrackSideEffects: boolean) {
 	};
 }
 
-// 组件的更新阶段中，追踪副作用
 export const reconcileChildFibers = ChildReconciler(true);
 
-// 首屏渲染阶段中不追踪副作用，只对根节点执行一次 DOM 插入操作
 export const mountChildFibers = ChildReconciler(false);

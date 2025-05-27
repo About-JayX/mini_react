@@ -63,7 +63,6 @@ function performUnitOfWork(fiber: FiberNode) {
 
 	//  处理属性更新情况
 	fiber.memoizedProps = fiber.pendingProps;
-
 	// next存在则存在子节点
 	if (next == null) {
 		// 遍历兄弟节点 sibling
@@ -75,6 +74,7 @@ function performUnitOfWork(fiber: FiberNode) {
 
 function completeUnitOfWork(fiber: FiberNode) {
 	let node: FiberNode | null = fiber;
+
 	do {
 		// 生成更新计划  函数在向上遍历阶段执行
 		completeWork(node);

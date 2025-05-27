@@ -30,7 +30,6 @@ export const jsx = (type: ElementType, config: any, ...children: any) => {
 	let key: Key = null;
 	let ref: Ref = null;
 	const props: Props = {};
-	console.log(children, 'children_');
 
 	for (const prop in config) {
 		const val = config[prop];
@@ -57,8 +56,6 @@ export const jsx = (type: ElementType, config: any, ...children: any) => {
 export const jsxDEV = (type: ElementType, config: any) => {
 	let key: Key = null;
 	let ref: Ref = null;
-
-	console.log(config, '??');
 
 	const props: Props = {};
 	for (const prop in config) {

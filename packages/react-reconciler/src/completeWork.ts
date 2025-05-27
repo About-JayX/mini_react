@@ -6,13 +6,16 @@ import {
 	Instance
 } from 'hostConfig';
 import { FiberNode } from './fiber';
-import { HostComponent, HostRoot, HostText } from './workTags';
+import {
+	FunctionComponent,
+	HostComponent,
+	HostRoot,
+	HostText
+} from './workTags';
 import { NoFlags } from './fiberFlags';
 
 export const completeWork = (workInProgress: FiberNode) => {
 	// 处理props
-	console.log(workInProgress, 'workInProgress_complete');
-
 	const newProps = workInProgress.pendingProps;
 	const current = workInProgress.alternate;
 
@@ -45,7 +48,9 @@ export const completeWork = (workInProgress: FiberNode) => {
 			// 收集更新 flags
 			bubbleProperties(workInProgress);
 			return null;
-
+		case FunctionComponent:
+			bubbleProperties(workInProgress);
+			return null;
 		default:
 			if (__DEV__) {
 				console.warn('completeWork 未实现的类型', workInProgress);
@@ -91,10 +96,10 @@ function bubbleProperties(workInProgress: FiberNode) {
 	while (child !== null) {
 		subtreeFlags |= child.subtreeFlags;
 		subtreeFlags |= child.flags;
-
 		child.return = workInProgress;
 		child = child.sibling;
 	}
 
 	workInProgress.subtreeFlags |= subtreeFlags;
+	console.log((workInProgress.subtreeFlags |= subtreeFlags), '???');
 }
